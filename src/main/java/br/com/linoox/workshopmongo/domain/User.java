@@ -1,8 +1,11 @@
 package br.com.linoox.workshopmongo.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document // Pode-se indicar a collection no mongoDB com "@Document(collection="user")
@@ -13,6 +16,11 @@ public class User implements Serializable {
 	private String id;
 	private String name;
 	private String email;
+
+	@DBRef(lazy = true) // Informa que se trata de uma referência ao BD e recupera os dados básicos do
+						// usuário;
+	private List<Post> posts = new ArrayList<>(); // Quando se implementa associações entre objetos,
+													// deve se iniciar as coleções
 
 	public User() {
 	}
@@ -46,6 +54,14 @@ public class User implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
 	}
 
 	@Override
